@@ -1,5 +1,3 @@
-/*pragma solidity ^0.4.23*/
-
 import "./BondingCurvedToken.sol";
 
 
@@ -19,11 +17,11 @@ contract PolynomialCurvedToken is BondingCurvedToken {
     /// @param _exponent        The exponent of the curve
     constructor(
         string name,
-        uint8 decimals,
         string symbol,
+        uint8 decimals,
         address reserveToken,
         uint8 _exponent
-    ) BondingCurvedToken(name, decimals, symbol, reserveToken) public {
+    ) BondingCurvedToken(name, symbol, decimals, reserveToken) public {
         exponent = _exponent;
     }
 
@@ -36,10 +34,10 @@ contract PolynomialCurvedToken is BondingCurvedToken {
     }
 
     function priceToMint(uint256 numTokens) public returns(uint256) {
-        return curveIntegral(totalSupply.add(numTokens)).sub(poolBalance);
+        return curveIntegral(totalSupply_.add(numTokens)).sub(poolBalance);
     }
 
     function rewardForBurn(uint256 numTokens) public returns(uint256) {
-        return poolBalance.sub(curveIntegral(totalSupply.sub(numTokens)));
+        return poolBalance.sub(curveIntegral(totalSupply_.sub(numTokens)));
     }
 }
